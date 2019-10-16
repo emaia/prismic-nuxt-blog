@@ -1,5 +1,16 @@
 <template>
   <div>
+    <nav class="navbar is-danger" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <nuxt-link :to="{ name: 'index' }" class="navbar-item">
+          <b>Blog.veda</b>
+        </nuxt-link>
+      </div>
+      <div class="navbar-end">
+        <nuxt-link :to="{ name: 'index' }" class="navbar-item">Home</nuxt-link>
+        <nuxt-link :to="{ name: 'blog' }" class="navbar-item">Blog</nuxt-link>
+      </div>
+    </nav>
     <nuxt />
   </div>
 </template>

@@ -1,47 +1,72 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">
-        nuxt-app
+        {{ $prismic.richTextAsPlain(document.title) }}
       </h1>
-      <h2 class="subtitle">
-        My primo Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import { getApi } from "~/utils"
+import PrismicConfig from "~/prismic.config.js"
+
+async function getPage(options = {}) {
+  const api = await getApi(options);
+  return api.getSingle('home');
+}
 
 export default {
   components: {
-    Logo
+    
+  },
+  created() {
+    //this.refetchPageForPreview();
+  },
+  data() {
+    return {
+      document: null,
+      documentId: null,
+    };
+  },
+  //methods: {
+    // async fetch() {
+    //   const result = await getPage();
+    //   this.document = result.data
+    //   this.documentId = result.id
+    // },
+  //},
+  head() {
+    return {
+      title: 'My awesome blog!'
+    }
+  },
+  async asyncData({ context, error, req }) {
+    
+    try {
+      const result = await getPage();
+
+      // Load the edit button
+      if (process.client) window.prismic.setupEditButton()
+    
+      return {
+        document: result.data,
+        documentId: result.id,
+      }
+    
+    } catch (e) {
+      error({ statusCode: 404, message: 'Page not found :(' })
+    }
+	
   }
 }
 </script>
 
-<style>
+<style scoped>
 .container {
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,7 +78,7 @@ export default {
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
-  font-size: 100px;
+  font-size: 48px;
   color: #35495e;
   letter-spacing: 1px;
 }

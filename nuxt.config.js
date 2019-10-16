@@ -1,3 +1,5 @@
+import Prismic from 'prismic-javascript'
+const PrismicConfig = require('./prismic.config')
 
 export default {
   mode: 'universal',
@@ -13,12 +15,17 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    ],
+    script: [
+      { innerHTML: '{ window.prismic = { endpoint: "' + PrismicConfig.apiEndpoint + '"} }' },
+      { src: '//static.cdn.prismic.io/prismic.min.js' }
+    ],
+    __dangerouslyDisableSanitizers: ['script'],
   },
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { color: 'yellow' },
   /*
   ** Global CSS
   */
@@ -28,6 +35,9 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/link-resolver.js',
+    '~/plugins/html-serializer.js',
+    '~/plugins/prismic-vue.js',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -41,6 +51,29 @@ export default {
     // Doc: https://github.com/nuxt-community/modules/tree/master/packages/bulma
     '@nuxtjs/bulma',
   ],
+
+  /*
+  ** Dynamic Route Generation
+  */
+  generate: {
+    devtools: true,
+    routes: async function (callback) {
+      try {
+        const api = await Prismic.getApi(PrismicConfig.apiEndpoint)
+
+        const posts = await api.query(
+          Prismic.Predicates.at('document.type', 'posts')
+        )
+
+        const routes = posts.results.map(post => `/blog/${post.uid}`)
+
+        callback(null, routes)
+      } catch (e) {
+        callback(e)
+      }
+    }
+  },
+
   /*
   ** Build configuration
   */
@@ -56,6 +89,10 @@ export default {
     ** You can extend webpack config here
     */
     extend (config, ctx) {
+      config.resolve.alias.vue = 'vue/dist/vue.common';
     }
+  },
+  router: {
+    middleware: 'preview',
   }
 }
