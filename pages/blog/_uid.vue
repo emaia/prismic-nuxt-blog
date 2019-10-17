@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <header>
+      <img :src="post.data.image.url" alt="Imagem" />
+    </header>
+
     <section class="hero">
       <div class="hero-body">
         <div class="container">
@@ -7,16 +11,18 @@
             {{ $prismic.richTextAsPlain(post.data.title) }}
           </h1>
           <p class="subtitle"></p>
-          <p>
-            Postado em {{ formattedDate(post.data.date) }}.
-            <nuxt-link :to="{ name: 'blog' }">Voltar para o blog</nuxt-link>
-          </p>
+          <p>Postado em {{ formattedDate(post.data.date) }}.</p>
         </div>
       </div>
     </section>
 
     <article class="content">
       <prismic-rich-text :field="post.data.content" />
+      <div class="bottom-link">
+        <nuxt-link :to="{ name: 'blog' }" class="button is-link is-fullwidth">
+          Voltar para o blog
+        </nuxt-link>
+      </div>
     </article>
   </div>
 </template>
@@ -67,8 +73,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+header {
+  @include desktop {
+    margin-top: 30px;
+  }
+}
 .content {
-  padding: 0 0 50px;
-  margin-bottom: 100px;
+  padding: 0 24px 20px;
+  margin-bottom: 50px;
+  @include desktop {
+    padding: 0 0 50px;
+    margin-bottom: 80px;
+  }
+  .bottom-link {
+    padding-top: 30px;
+  }
 }
 </style>
