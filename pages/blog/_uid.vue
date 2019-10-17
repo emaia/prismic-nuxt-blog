@@ -1,11 +1,24 @@
 <template>
   <div class="container">
-    <nuxt-link :to="{ name: 'blog' }">Voltar</nuxt-link>
-    <h1 class="title">{{ $prismic.richTextAsPlain(post.data.title) }}</h1>
-    <p>Postado em {{ formattedDate(post.data.date) }}</p>
-    <div class="content">
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            {{ $prismic.richTextAsPlain(post.data.title) }}
+          </h1>
+          <p class="subtitle">
+            
+          </p>
+          <p>Postado em {{ formattedDate(post.data.date) }}. <nuxt-link :to="{ name: 'blog' }">Voltar para o blog</nuxt-link></p>
+        </div>
+      </div>
+    </section>
+
+    <article class="content">
       <prismic-rich-text :field="post.data.content"/>
-    </div>
+    </article>
+
   </div>
 </template>
 <script>
@@ -66,3 +79,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.content {
+  padding: 0 0 50px;
+  margin-bottom: 100px
+}
+</style>

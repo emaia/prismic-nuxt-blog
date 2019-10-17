@@ -5,15 +5,55 @@
         <nuxt-link :to="{ name: 'index' }" class="navbar-item">
           <b>Blog.veda</b>
         </nuxt-link>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-      <div class="navbar-end">
+      <div class="navbar-menu navbar-end" id="navMenu">
         <nuxt-link :to="{ name: 'index' }" class="navbar-item">Home</nuxt-link>
         <nuxt-link :to="{ name: 'blog' }" class="navbar-item">Blog</nuxt-link>
       </div>
     </nav>
     <nuxt />
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          <strong>Blog</strong> by <a href="https://veda.com.br">Dina</a>.
+        </p>
+      </div>
+    </footer>
   </div>
 </template>
+
+<script>
+export default {
+  mounted() {
+    // Get all "navbar-burger" elements
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+    // Check if there are any navbar burgers
+    if ($navbarBurgers.length > 0) {
+
+      // Add a click event on each of them
+      $navbarBurgers.forEach( el => {
+        el.addEventListener('click', () => {
+
+          // Get the target from the "data-target" attribute
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+
+          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+
+        });
+      });
+    }
+  }  
+}
+</script>
 
 <style>
 html {
@@ -35,32 +75,5 @@ html {
   margin: 0;
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
 </style>
