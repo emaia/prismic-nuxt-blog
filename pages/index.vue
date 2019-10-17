@@ -9,8 +9,7 @@
 </template>
 
 <script>
-import { getApi } from "~/utils"
-import PrismicConfig from "~/prismic.config.js"
+import { getApi } from '~/utils';
 
 async function getPage(options = {}) {
   const api = await getApi(options);
@@ -18,49 +17,37 @@ async function getPage(options = {}) {
 }
 
 export default {
-  components: {
-    
-  },
-  created() {
-    //this.refetchPageForPreview();
-  },
+  components: {},
   data() {
     return {
       document: null,
-      documentId: null,
+      documentId: null
     };
   },
-  //methods: {
-    // async fetch() {
-    //   const result = await getPage();
-    //   this.document = result.data
-    //   this.documentId = result.id
-    // },
-  //},
-  head() {
-    return {
-      title: 'My awesome blog!'
-    }
-  },
-  async asyncData({ context, error, req }) {
-    
+  async asyncData({ error }) {
     try {
       const result = await getPage();
 
       // Load the edit button
-      if (process.client) window.prismic.setupEditButton()
-    
+      if (process.client) window.prismic.setupEditButton();
+
       return {
         document: result.data,
-        documentId: result.id,
-      }
-    
+        documentId: result.id
+      };
     } catch (e) {
-      error({ statusCode: 404, message: 'Page not found :(' })
+      error({ statusCode: 404, message: 'Page not found :(' });
     }
-	
+  },
+  created() {
+    //
+  },
+  head() {
+    return {
+      title: 'My awesome blog!'
+    };
   }
-}
+};
 </script>
 
 <style scoped>
@@ -74,24 +61,12 @@ export default {
 }
 
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 48px;
   color: #35495e;
   letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>

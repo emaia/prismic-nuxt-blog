@@ -15,6 +15,6 @@ export default {
     const api = await getApi();
     const url = await api.previewSession(previewToken, LinkResolver, '/');
     redirect(url);
-  },
+  }
 };
 </script>
