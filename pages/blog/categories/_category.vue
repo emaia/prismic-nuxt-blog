@@ -3,11 +3,8 @@
     <section class="hero">
       <div class="hero-body">
         <h1 class="title">
-          <b>Prismic Vue.js Blog</b>
+          <b>Category: {{ category }}</b>
         </h1>
-        <h2 class="subtitle">
-          Javscript is awesome!
-        </h2>
       </div>
     </section>
 
@@ -61,7 +58,7 @@
           :id="`page${props.page.number}`"
           slot-scope="props"
           :page="props.page"
-          :to="`/blog/?page=${props.page.number}`"
+          :to="`/categories/?page=${props.page.number}`"
           tag="router-link"
         >
           {{ props.page.number }}
@@ -71,7 +68,7 @@
           slot-scope="props"
           :page="props.page"
           tag="router-link"
-          :to="`/blog/?page=${props.page.number}`"
+          :to="`/categories/?page=${props.page.number}`"
         >
           <b-icon icon="chevron-left"></b-icon>
         </b-pagination-button>
@@ -81,7 +78,7 @@
           slot-scope="props"
           :page="props.page"
           tag="router-link"
-          :to="`/blog/?page=${props.page.number}`"
+          :to="`/categories/?page=${props.page.number}`"
         >
           <b-icon icon="chevron-right"></b-icon>
         </b-pagination-button>
@@ -96,7 +93,7 @@ import LinkResolver from '~/plugins/link-resolver.js';
 
 async function getBlogIndex(options = {}) {
   const api = await getApi();
-  return await api.query(Prismic.Predicates.at('document.type', 'posts'), {
+  return await api.query(Prismic.Predicates.at('document.tags', [options.category]), {
     orderings: '[my.posts.date desc]',
     pageSize: 3,
     page: options.page || 1
@@ -126,13 +123,15 @@ export default {
       nextIcon: 'chevron-right'
     };
   },
-  watchQuery: ['page'],
-  async asyncData({ query, error }) {
+  watchQuery: ['page', 'category'],
+  async asyncData({ route, query, error }) {
     try {
       const page = parseInt(query.page) || 1;
-      const posts = await getBlogIndex({ page });
+      const category = route.params.category;
+      const posts = await getBlogIndex({ page, category });
 
       return {
+        category: category,
         posts: posts.results,
         current: posts.page,
         total: posts.total_results_size,

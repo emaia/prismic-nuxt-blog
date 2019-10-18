@@ -83,5 +83,15 @@ export default {
   },
   router: {
     middleware: 'preview'
+  },
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return { selector: to.hash };
+    }
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { x: 100, y: 0 };
+    }
   }
 };
