@@ -24,8 +24,8 @@
         <nuxt-link :to="{ name: 'blog' }" class="navbar-item">Blog</nuxt-link>
       </div>
     </nav>
-    <transition name="fade">
-      <nuxt />
+    <transition name="fade" mode="out-in">
+      <nuxt :key="$route.fullPath" />
     </transition>
     <footer class="footer">
       <div class="content has-text-centered">

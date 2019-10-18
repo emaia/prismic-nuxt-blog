@@ -29,7 +29,7 @@
           </p>
 
           <p class="tags">
-            <span v-for="tag in post.tags" :key="tag.index" class="tag">{{ tag }}</span>
+            <b-tag v-for="tag in post.tags" :key="tag.index" type="is-light">{{ tag }}</b-tag>
           </p>
 
           <nuxt-link :to="LinkResolverF(post)" class="button is-link is-small">Read more</nuxt-link>
@@ -55,6 +55,34 @@
         aria-page-label="Page"
         aria-current-label="Current page"
       >
+        <b-pagination-button
+          :id="`page${props.page.number}`"
+          slot-scope="props"
+          :page="props.page"
+          :to="`/blog?page=${props.page.number}`"
+          tag="router-link"
+        >
+          {{ props.page.number }}
+        </b-pagination-button>
+        <b-pagination-button
+          slot="previous"
+          slot-scope="props"
+          :page="props.page"
+          tag="router-link"
+          :to="`/blog?page=${props.page.number}`"
+        >
+          <b-icon icon="chevron-left"></b-icon>
+        </b-pagination-button>
+
+        <b-pagination-button
+          slot="next"
+          slot-scope="props"
+          :page="props.page"
+          tag="router-link"
+          :to="`/blog?page=${props.page.number}`"
+        >
+          <b-icon icon="chevron-right"></b-icon>
+        </b-pagination-button>
       </b-pagination>
     </div>
   </div>
@@ -95,16 +123,11 @@ export default {
       nextIcon: 'chevron-right'
     };
   },
-  watch: {
-    // sempre que a pergunta mudar, essa função será executada
-    current: function(newValue, oldValue) {
-      console.log(`Mudou de ${oldValue} para ${newValue}`);
-      this.fetchPosts(newValue);
-    }
-  },
-  async asyncData({ context, error, req }) {
+  watchQuery: ['page'],
+  async asyncData({ query, error }) {
     try {
-      const posts = await getBlogIndex({ page: 1 });
+      const page = parseInt(query.page) || 1;
+      const posts = await getBlogIndex({ page });
 
       return {
         posts: posts.results,
