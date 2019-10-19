@@ -81,17 +81,8 @@ export default {
       config.resolve.alias.vue = 'vue/dist/vue.common';
     }
   },
+
   router: {
     middleware: 'preview'
-  },
-  scrollBehavior(to, from, savedPosition) {
-    if (to.hash) {
-      return { selector: to.hash };
-    }
-    if (savedPosition) {
-      return savedPosition;
-    } else {
-      return { x: 0, y: 0 };
-    }
   }
 };
