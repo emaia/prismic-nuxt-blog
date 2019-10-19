@@ -91,7 +91,7 @@ export default {
     if (savedPosition) {
       return savedPosition;
     } else {
-      return { x: 100, y: 0 };
+      return { x: 0, y: 0 };
     }
   }
 };
