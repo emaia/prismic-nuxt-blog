@@ -1,6 +1,4 @@
-# nuxt-app
-
-> My primo Nuxt.js project
+# Blog example with Nuxt + Prismic.io
 
 ## Build Setup
 
@@ -18,5 +16,3 @@ $ yarn start
 # generate static project
 $ yarn generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
